@@ -1,0 +1,12 @@
+pandas
+numpy
+scikit-learn
+tensorflow
+transformers
+torch
+fastapi
+uvicorn[standard]
+requests
+pydantic
+matplotlib
+seaborn

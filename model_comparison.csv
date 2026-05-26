@@ -1,0 +1,4 @@
+Modèle,Entraînement,Accuracy,AUC-ROC,F1 (Fausse),Jeu d'éval,Vitesse,Coût,Explicabilité
+BiLSTM (IA Classique),From scratch sur le dataset,95.22%,0.9664,0.6291,Test complet (3 576 offres),Rapide (local),Gratuit (calcul CPU/GPU),Faible
+BART Zero-Shot (HuggingFace),Aucun (zero-shot),94.67%,0.5519,0.0000,150 échantillons,"Lent (grand modèle, CPU)",Gratuit (local),Moyenne (scores par label)
+Mistral-7B (OpenRouter API),Aucun (prompt engineering),62.50%,N/A,0.4000,8 échantillons (limite tier gratuit),Variable (latence réseau),Gratuit (limité),Haute (explication en langage naturel)
