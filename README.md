@@ -1,42 +1,42 @@
-# Fake Job Posting Detector
+# Détecteur de Fausses Offres d'Emploi
 
-A Streamlit web application that detects fraudulent job postings using three complementary AI approaches.
+Application web Streamlit qui détecte les offres d'emploi frauduleuses en combinant trois approches d'intelligence artificielle complémentaires.
 
-## Demo
+## Démonstration
 
-Enter a job posting (title, company profile, description, requirements, benefits) and get instant predictions from three models with a majority-vote ensemble verdict.
+Renseignez une offre d'emploi (titre, profil de l'entreprise, description, compétences requises, avantages) et obtenez instantanément les prédictions des trois modèles ainsi qu'un verdict final par vote majoritaire.
 
-## Approaches
+## Approches comparées
 
-| Model | Type | Accuracy | AUC-ROC |
-|-------|------|----------|---------|
-| **BiLSTM** (trained from scratch) | Classic deep learning | 94.91% | 0.9617 |
-| **BART-large-mnli** (HuggingFace) | Zero-shot NLI | 94.67%* | 0.552 |
-| **GPT-OSS-120B** (OpenRouter API) | LLM with explanation | 62.5% | N/A |
+| Modèle | Type | Accuracy | AUC-ROC |
+|--------|------|----------|---------|
+| **BiLSTM** (entraîné from scratch) | Deep learning classique | 94,91 % | 0,9617 |
+| **BART-large-mnli** (HuggingFace) | Zero-shot NLI | 94,67 %* | 0,552 |
+| **GPT-OSS-120B** (API OpenRouter) | LLM avec explication | 62,5 % | N/A |
 
-> *BART's high accuracy is misleading — the dataset is ~95% real postings (class imbalance). Its F1=0.00 on fake postings shows it detects none without fine-tuning.
+> *La haute accuracy de BART est trompeuse — le dataset contient ~95 % d'offres réelles (déséquilibre de classes). Son F1=0,00 sur les fausses offres montre qu'il n'en détecte aucune sans fine-tuning.
 
-## Dataset
+## Jeu de données
 
-- **Source**: [Employment Scam Aegean Dataset (EMSCAD)](https://www.kaggle.com/datasets/shivamb/real-or-fake-fake-jobposting-prediction)
-- **Size**: 17 880 job postings (~4.8% fraudulent)
-- **File**: `fake_job_postings.csv`
+- **Source** : [Employment Scam Aegean Dataset (EMSCAD)](https://www.kaggle.com/datasets/shivamb/real-or-fake-fake-jobposting-prediction)
+- **Taille** : 17 880 offres d'emploi (~4,8 % frauduleuses)
+- **Fichier** : `fake_job_postings.csv`
 
-## Project Structure
+## Structure du projet
 
 ```
-├── app.py                  # Streamlit application
-├── main.py                 # Training script (BiLSTM)
-├── fakejob.ipynb           # Exploratory analysis & model comparison notebook
-├── lstm_model.keras        # Trained BiLSTM model weights
-├── keras_tokenizer.pkl     # Fitted Keras tokenizer
-├── fake_job_postings.csv   # Raw dataset
-├── requirements.txt        # Python dependencies
-├── class_distribution.png  # Dataset class balance chart
-├── lstm_training.png       # BiLSTM training curves
-├── lstm_cm.png             # BiLSTM confusion matrix
-├── model_comparison.png    # Side-by-side model comparison
-└── model_comparison.csv    # Numeric comparison results
+├── app.py                  # Application Streamlit
+├── main.py                 # Script d'entraînement du BiLSTM
+├── fakejob.ipynb           # Analyse exploratoire et comparaison des modèles
+├── lstm_model.keras        # Poids du modèle BiLSTM entraîné
+├── keras_tokenizer.pkl     # Tokenizer Keras ajusté
+├── fake_job_postings.csv   # Dataset brut
+├── requirements.txt        # Dépendances Python
+├── class_distribution.png  # Répartition des classes dans le dataset
+├── lstm_training.png       # Courbes d'entraînement du BiLSTM
+├── lstm_cm.png             # Matrice de confusion du BiLSTM
+├── model_comparison.png    # Comparaison visuelle des modèles
+└── model_comparison.csv    # Résultats numériques de la comparaison
 ```
 
 ## Installation
@@ -47,43 +47,43 @@ cd Fake-job-posting-
 pip install -r requirements.txt
 ```
 
-## Usage
+## Lancement
 
 ```bash
 streamlit run app.py
 ```
 
-Then open [http://localhost:8501](http://localhost:8501) in your browser.
+Ouvrez ensuite [http://localhost:8501](http://localhost:8501) dans votre navigateur.
 
-For the OpenRouter (GPT) tab, add your free API key from [openrouter.ai](https://openrouter.ai) in the sidebar.
+Pour utiliser l'onglet OpenRouter (GPT), ajoutez votre clé API gratuite depuis [openrouter.ai](https://openrouter.ai) dans la barre latérale.
 
-## Model Details
+## Détails des modèles
 
-### BiLSTM (Classic AI)
-- Architecture: Embedding → Bidirectional LSTM → Dense
-- Input: concatenation of all text fields, lowercased and HTML-stripped
-- Max sequence length: 300 tokens
-- Training set: 14 304 postings / Test set: 3 576 postings
+### BiLSTM (IA Classique)
+- Architecture : Embedding → LSTM Bidirectionnel → Dense
+- Entrée : concaténation de tous les champs textuels, mis en minuscule et nettoyés du HTML
+- Longueur maximale de séquence : 300 tokens
+- Jeu d'entraînement : 14 304 offres / Jeu de test : 3 576 offres
 
 ### BART Zero-Shot (HuggingFace)
-- Model: `facebook/bart-large-mnli`
-- Labels: `"legitimate job posting"` vs `"fake fraudulent job posting"`
-- No training required — pure NLI inference
+- Modèle : `facebook/bart-large-mnli`
+- Labels : `"legitimate job posting"` vs `"fake fraudulent job posting"`
+- Aucun entraînement requis — inférence NLI pure
 
-### GPT-OSS-120B (OpenRouter API)
-- Returns a structured JSON verdict with a natural-language explanation
-- Prompt-engineered to flag known red flags (vague description, unrealistic salary, requests for personal info, poor grammar)
+### GPT-OSS-120B (API OpenRouter)
+- Retourne un verdict JSON structuré accompagné d'une explication en langage naturel
+- Prompt conçu pour détecter les signaux d'alerte connus : description vague, salaire irréaliste, demande d'informations personnelles, fautes de grammaire, absence de détails sur l'entreprise
 
-## Requirements
+## Prérequis
 
 - Python 3.9+
 - TensorFlow 2.x
-- PyTorch (for BART inference)
+- PyTorch (pour l'inférence BART)
 - Streamlit
 - Transformers (HuggingFace)
 
-See `requirements.txt` for the full list.
+Voir `requirements.txt` pour la liste complète.
 
-## Author
+## Auteur
 
 **Yacine Ismail** — Mastère Data Intelligence Artificielle, NEXA
